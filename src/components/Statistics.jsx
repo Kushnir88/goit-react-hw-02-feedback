@@ -1,9 +1,9 @@
 import React from 'react';
+import '../styles.css';
 
 const Statistics = ({ good, neutral, bad, total, positivePercentage }) => {
   return (
-    <div>
-      {/* <h2>Feedback Statistics</h2> */}
+    <div className="statistics">
       <p>Good: {good}</p>
       <p>Neutral: {neutral}</p>
       <p>Bad: {bad}</p>
