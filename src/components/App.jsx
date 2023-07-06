@@ -4,45 +4,60 @@ import FeedbackOptions from './FeedbackOptions';
 import Section from './Section';
 import Notification from './Notification';
 import '../styles.css';
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      feedback: { good: 0, neutral: 0, bad: 0 },
+    };
+  }
 
-export const App = () => {
-  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
-
-  const handleFeedback = (type) => {
-    setFeedback((prevFeedback) => ({ ...prevFeedback, [type]: prevFeedback[type] + 1 }));
+  handleFeedback = (type) => {
+    this.setState((prevState) => ({
+      feedback: {
+        ...prevState.feedback,
+        [type]: prevState.feedback[type] + 1,
+      },
+    }));
   };
 
-  const countTotalFeedback = () => {
-    const { good, neutral, bad } = feedback;
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state.feedback;
     return good + neutral + bad;
   };
 
-  const countPositiveFeedbackPercentage = () => {
-    const { good } = feedback;
-    const totalFeedback = countTotalFeedback();
+  countPositiveFeedbackPercentage = () => {
+    const { good } = this.state.feedback;
+    const totalFeedback = this.countTotalFeedback();
     return totalFeedback === 0 ? 0 : Math.round((good / totalFeedback) * 100);
   };
 
-  const hasFeedback = countTotalFeedback() > 0;
+  hasFeedback = () => this.countTotalFeedback() > 0;
 
-  return (
-    <div className="app-container">
-      <Section title="Expresso Cafe Feedback">
-        <FeedbackOptions options={['good', 'neutral', 'bad']} onLeaveFeedback={handleFeedback} />
-      </Section>
-      <Section title="Feedback Statistics">
-        {hasFeedback ? (
-          <Statistics
-            good={feedback.good}
-            neutral={feedback.neutral}
-            bad={feedback.bad}
-            total={countTotalFeedback()}
-            positivePercentage={countPositiveFeedbackPercentage()}
-          />
-        ) : (
-          <Notification message="There is no feedback" />
-        )}
-      </Section>
-    </div>
-  );
-};
+  render() {
+    const { feedback } = this.state;
+
+    return (
+      <div className="app-container">
+        <Section title="Expresso Cafe Feedback">
+          <FeedbackOptions options={['good', 'neutral', 'bad']} onLeaveFeedback={this.handleFeedback} />
+        </Section>
+        <Section title="Feedback Statistics">
+          {this.hasFeedback() ? (
+            <Statistics
+              good={feedback.good}
+              neutral={feedback.neutral}
+              bad={feedback.bad}
+              total={this.countTotalFeedback()}
+              positivePercentage={this.countPositiveFeedbackPercentage()}
+            />
+          ) : (
+            <Notification message="There is no feedback" />
+          )}
+        </Section>
+      </div>
+    );
+  }
+}
+
+export default App;
