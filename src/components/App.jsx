@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+// src/components/App.jsx
+import React, { Component } from 'react';
 import Statistics from './Statistics';
 import FeedbackOptions from './FeedbackOptions';
 import Section from './Section';
 import Notification from './Notification';
 import '../styles.css';
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      feedback: { good: 0, neutral: 0, bad: 0 },
-    };
-  }
+
+class App extends Component {
+  state = {
+    feedback: { good: 0, neutral: 0, bad: 0 },
+  };
 
   handleFeedback = (type) => {
     this.setState((prevState) => ({
